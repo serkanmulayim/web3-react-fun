@@ -12,6 +12,19 @@ export default function MethodForm(props) {
 
     React.useEffect(()=> (setNote("")), [props.abiData]);
 
+    //according to https://web3js.readthedocs.io/en/v1.3.0/web3-eth-contract.html#id26 we need param types while calling methods
+    function getParamSignature() {
+        let out = "(";
+        props.abiData.inputs.map((item, index)=> {
+            if(index>0){
+                out += ",";
+            }
+            out += item.type;
+        })
+        out += ")";
+        return out;
+    }
+
     function handleClick(event) {
 
         let params = [];
@@ -32,13 +45,18 @@ export default function MethodForm(props) {
         }
 
         try {
-            if (!props.abiData.payable) {
-                props.contract.methods[props.abiData.name](...params).call().then((res) => {setNote("Output:"+JSON.stringify(res))});
+            if (props.abiData.stateMutability === "view" || props.abiData.stateMutability === "pure") {
+                props.contract.methods[props.abiData.name + getParamSignature()](...params).call(options)
+                .then((res) => {setNote("Output:"+JSON.stringify(res))});
             } else {
-                if (sendValueRef.current.value !== "") {
+                if (props.abiData.payable && sendValueRef.current.value !== "") {
                     options = { ...options, value: sendValueRef.current.value };
                 }
-                props.contract.methods[props.abiData.name](...params).send(options).then((res) => {setNote("Output:"+JSON.stringify(res))});
+                props.contract.methods[props.abiData.name + getParamSignature()](...params).send(options)
+                    .on("receipt", function(res){
+                            console.log(JSON.stringify(res));
+                            setNote("Output:see console logs for the receipt")
+                    });
             }
         } catch (err) {
             console.error( err.message);
