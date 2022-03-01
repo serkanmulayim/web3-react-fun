@@ -19,8 +19,6 @@ function App() {
     contract = new state.web3.eth.Contract(JSON.parse(state.abi), state.contractAddr);
   }
 
-
-
   return (
     <div className="App">
       <Header />      

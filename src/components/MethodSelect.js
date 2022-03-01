@@ -1,7 +1,5 @@
 import React from "react";
-import {Dropdown, Form} from "react-bootstrap";
-
-
+import {Dropdown} from "react-bootstrap";
 
 export default function MethodSelect(props) {
 
@@ -19,15 +17,18 @@ export default function MethodSelect(props) {
                     {props.abi && props.abi.map(function(item, index){
                             if(item.type === "function") {
                                 return  <Dropdown.Item key={index} onClick={() => handleSelect(index)}>{item.name}</Dropdown.Item>;
+                            } else {
+                            return null;
                             }
                         })}
                         
-                  
                     <Dropdown.Divider />
                     <Dropdown.ItemText><b>Constructor</b></Dropdown.ItemText>                    
                     {props.abi && props.abi.map(function(item, index){
                             if(item.type === "constructor") {
                                 return  <Dropdown.Item key={index} onClick={() => handleSelect(index)}>constructor</Dropdown.Item>;
+                            } else {
+                                return null;
                             }
                         })}
                     <Dropdown.Divider />
@@ -36,6 +37,8 @@ export default function MethodSelect(props) {
                     {props.abi && props.abi.map(function(item, index){
                             if(item.type === "event") {
                                 return  <Dropdown.Item key={index} onClick={() => handleSelect(index)}>{item.name}</Dropdown.Item>;
+                            } else {
+                                return null;
                             }
                         })}
                 </Dropdown.Menu>

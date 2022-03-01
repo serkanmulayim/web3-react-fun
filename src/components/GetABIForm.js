@@ -2,14 +2,12 @@ import React from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 
-
 export default function GetABIForm(props) {
 
     const ROPSTEN_ETHERSCAN_API = "https://api-ropsten.etherscan.io/api";
     //inputs are not kept in state
     const apiKeyRef = React.useRef("");
     const contractAddrRef = React.useRef("");
-    console.log("GetABIForm");
 
     function handleClick() {
         //get abi from 
@@ -25,8 +23,8 @@ export default function GetABIForm(props) {
 
                 if (response.data.message === "NOTOK") {
                     props.updateState({ notification: response.data.result, abi: undefined })
-                } else if (response.data.message === "OK") {                        
-                    props.updateState({ abi: response.data.result, notification: "SUCCESS", contractAddr: contractAddrRef.current.value});
+                } else if (response.data.message === "OK") {
+                    props.updateState({ abi: response.data.result, notification: "SUCCESS", contractAddr: contractAddrRef.current.value });
                 } else {
                     props.updateState({ notification: "Enter API Key", abi: undefined })
                 }
@@ -34,7 +32,6 @@ export default function GetABIForm(props) {
             .catch(function (error) {
                 props.updateState({ notification: JSON.stringify(error), abi: undefined })
             })
-
     }
 
     return (
@@ -43,10 +40,9 @@ export default function GetABIForm(props) {
                 <Form.Label>API Key: </Form.Label>
                 <Form.Control type="text" placeholder="API Key" ref={apiKeyRef} />
                 <Form.Text className="text-muted">
-                    Get your API key from <a href="https://info.etherscan.com/etherscan-developer-api-key/" target="_blank">here</a>.
-          </Form.Text>
+                    Get your API key from <a href="https://info.etherscan.com/etherscan-developer-api-key/" target="_blank" rel="noreferrer">here</a>.
+                </Form.Text>
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="contractAddress">
                 <Form.Label>Contract Address: </Form.Label>
                 <Form.Control type="text" placeholder="Contract Address" ref={contractAddrRef} />

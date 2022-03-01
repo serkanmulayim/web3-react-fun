@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Badge } from "react-bootstrap";
+import {Form, Button} from "react-bootstrap";
 
 export default function MethodForm(props) {
 
@@ -16,7 +16,7 @@ export default function MethodForm(props) {
 
         let params = [];
         //validate inputs (does not do type check)
-        paramsRef.current.map((reff, index) => {
+        paramsRef.current.forEach((reff, index) => {
             if (reff && reff.value === "") {
                 console.error(`Missing param ${index}. Make sure all params are entered`)
             } else if (reff) { //reff might come null for somereason although it was not set at all (for 0 params)
@@ -33,15 +33,15 @@ export default function MethodForm(props) {
 
         try {
             if (!props.abiData.payable) {
-                props.contract.methods[props.abiData.name](...params).call(options).then((res) => (setNote("Output:"+JSON.stringify(res))));
+                props.contract.methods[props.abiData.name](...params).call().then((res) => {setNote("Output:"+JSON.stringify(res))});
             } else {
                 if (sendValueRef.current.value !== "") {
                     options = { ...options, value: sendValueRef.current.value };
                 }
-                props.contract.methods[props.abiData.name](...params).send(options).then((res) => (setNote("Output:"+JSON.stringify(res))));
+                props.contract.methods[props.abiData.name](...params).send(options).then((res) => {setNote("Output:"+JSON.stringify(res))});
             }
         } catch (err) {
-            console.log("this is the error" + err.message);
+            console.error( err.message);
             setNote(err.message);
         }
     }
@@ -56,8 +56,7 @@ export default function MethodForm(props) {
         );
     }
 
-    if (props.abiData) {
-        const payable = props.abiData.payable ? "Payable" : "Non-Payable";
+    if (props.abiData) {        
         const functionName = props.abiData.name ? props.abiData.name : "constructor";
         return (
             <Form className="MethodForm">

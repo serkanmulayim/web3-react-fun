@@ -14,7 +14,7 @@ export default function Web3ProviderView(props) {
         return (
             <div className="UpperBodyElement">
                 <Button variant="success" type="button" disabled={true} style={{ marginBottom: "30px" }} >Connect to Web3</Button>
-                <p className="danger">Metamask is not installed. It can be installed from <a href="https://metamask.io/download/" target="_blank">here.</a></p>
+                <p className="danger">Metamask is not installed. It can be installed from <a href="https://metamask.io/download/" target="_blank" rel="noreferrer">here.</a></p>
             </div>
         )
     }
@@ -31,7 +31,6 @@ export default function Web3ProviderView(props) {
             setNote(["Account:" + acc, "Network:" + network]);
         }
     }
-
 
     async function handleClick() {
         try {
